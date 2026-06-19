@@ -17,12 +17,10 @@
         pname = "keylight-hap";
         inherit version;
         src = ./.;
-        # First build on a Nix host: leave this as lib.fakeHash, run
-        # `nix build .#keylight-hap`, and Nix will fail with the real
-        # `got: sha256-…` — paste that value here. (It can't be cribbed from
-        # breezyd: the vendorHash is a NAR hash of *this* module set, which
-        # differs from breezyd's.)
-        vendorHash = pkgs.lib.fakeHash;
+        # NAR hash of this module set. To refresh after changing deps: set to
+        # pkgs.lib.fakeHash, run `nix build .#keylight-hap`, paste the
+        # reported `got:` hash here.
+        vendorHash = "sha256-GJIFrDZiimkSYuY47hx7c/J//23fcYycqLGnEiJv5c8=";
         subPackages = [ "cmd/keylight-hap" ];
         ldflags = [ "-s" "-w" ];
         doCheck = true;
