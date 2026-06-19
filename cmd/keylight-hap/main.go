@@ -11,6 +11,8 @@ import (
 	"syscall"
 	"time"
 
+	haplog "github.com/brutella/hap/log"
+
 	"github.com/hughobrien/keylight-hap/internal/bridge"
 	"github.com/hughobrien/keylight-hap/internal/discover"
 	"github.com/hughobrien/keylight-hap/internal/elgato"
@@ -22,7 +24,12 @@ func main() {
 	pollInterval := flag.Duration("poll-interval", envDurOr("KEYLIGHT_HAP_POLL_INTERVAL", 20*time.Second), "state-sync poll interval")
 	discoveryTimeout := flag.Duration("discovery-timeout", envDurOr("KEYLIGHT_HAP_DISCOVERY_TIMEOUT", 5*time.Second), "mDNS browse window per attempt")
 	stateDir := flag.String("state-dir", envOr("KEYLIGHT_HAP_STATE_DIR", "/var/lib/keylight-hap"), "PIN + pairing storage directory")
+	debug := flag.Bool("debug", envBoolOr("KEYLIGHT_HAP_DEBUG", false), "enable verbose HAP debug logging (logs raw protocol payloads)")
 	flag.Parse()
+
+	if *debug {
+		haplog.Debug.Enable()
+	}
 
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
@@ -81,6 +88,15 @@ func envDurOr(key string, def time.Duration) time.Duration {
 	if v := os.Getenv(key); v != "" {
 		if d, err := time.ParseDuration(v); err == nil {
 			return d
+		}
+	}
+	return def
+}
+
+func envBoolOr(key string, def bool) bool {
+	if v := os.Getenv(key); v != "" {
+		if b, err := strconv.ParseBool(v); err == nil {
+			return b
 		}
 	}
 	return def
