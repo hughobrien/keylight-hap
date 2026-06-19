@@ -115,6 +115,7 @@ so there is no config file.
 | `--poll-interval`     | `KEYLIGHT_HAP_POLL_INTERVAL`     | `20s`                   | State-sync poll period.                  |
 | `--discovery-timeout` | `KEYLIGHT_HAP_DISCOVERY_TIMEOUT` | `5s`                    | mDNS browse window per attempt.          |
 | `--state-dir`         | `KEYLIGHT_HAP_STATE_DIR`         | `/var/lib/keylight-hap` | PIN + pairing storage directory.         |
+| `--debug`             | `KEYLIGHT_HAP_DEBUG`             | `false`                 | Verbose HAP debug logging (raw protocol payloads). |
 
 ## NixOS
 
@@ -290,8 +291,18 @@ stands on two community reverse-engineering write-ups:
 
 (The two sources disagree on the colour-temperature direction; the
 `temperature`-is-mireds reading used here was confirmed against a real Key
-Light.) HomeKit support is provided by
-[`brutella/hap`](https://github.com/brutella/hap).
+Light.)
+
+HomeKit support is provided by [`brutella/hap`](https://github.com/brutella/hap),
+via a [fork](https://github.com/hughobrien/hap) that adds the Adaptive Lighting
+characteristics + curve engine and carries a few upstreamable HAP fixes (pairing
+handler robustness; see the fork's branches and
+[brutella/hap#67](https://github.com/brutella/hap/pull/67)). The Adaptive
+Lighting TLV8 format was ported from
+[HAP-NodeJS](https://github.com/homebridge/HAP-NodeJS) and
+[HAP-python](https://github.com/ikalchev/HAP-python). mDNS is handled by
+[`brutella/dnssd`](https://github.com/brutella/dnssd) (pinned to an upstream
+commit ahead of v1.2.14 for an mDNS-browse CPU fix).
 
 ## License
 
