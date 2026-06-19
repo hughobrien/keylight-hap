@@ -34,4 +34,27 @@ func TestLightAccessory_WriteAndSync(t *testing.T) {
 	}
 }
 
-func ptr[T any](v T) *T { return &v }
+func TestNew_BuildsServerWithPin(t *testing.T) {
+	d := elgato.NewFakeDevice()
+	defer d.Close()
+
+	b, err := New(context.Background(), Options{
+		StateDir:     t.TempDir(),
+		BridgeName:   "test-bridge",
+		Port:         0,
+		PollInterval: 20 * 1000 * 1000, // 20ms in nanoseconds, fast for test
+		Lights:       []Target{{Name: "Desk", Client: elgato.New(d.HostPort())}},
+	})
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+	if len(b.Pin) != 8 {
+		t.Fatalf("pin: %q", b.Pin)
+	}
+	if b.Server == nil {
+		t.Fatal("nil server")
+	}
+	if len(b.lights) != 1 {
+		t.Fatalf("lights: %d", len(b.lights))
+	}
+}
