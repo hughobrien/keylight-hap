@@ -3,7 +3,7 @@ module github.com/hughobrien/keylight-hap
 go 1.26
 
 require (
-	github.com/brutella/dnssd v1.2.14
+	github.com/brutella/dnssd v1.2.15-0.20260227152348-8c9d3cd68d00
 	github.com/brutella/hap v0.0.35
 )
 
