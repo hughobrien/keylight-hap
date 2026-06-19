@@ -6,8 +6,8 @@ github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSs
 github.com/go-chi/chi v1.5.4 h1:QHdzF2szwjqVV4wmByUnTcsbIg7UGaQ0tPF2t5GcAIs=
 github.com/go-chi/chi v1.5.4/go.mod h1:uaf8YgoFazUOkPBG7fxPftUylNumIev9awIWOENIuEg=
 github.com/google/go-cmp v0.6.0/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
-github.com/hughobrien/hap v0.0.36-0.20260619224746-60b4a25ccc3d h1:cWbOX9/d091ZJZYI71LgzDC9MprRwvLj4kANkMm3puQ=
-github.com/hughobrien/hap v0.0.36-0.20260619224746-60b4a25ccc3d/go.mod h1:vWJ+URAmB9aEXZ6bWeqO9iHwz+pcb89eR1pNYK2ZAUM=
+github.com/hughobrien/hap v0.0.36-0.20260619225610-910e73cb7a26 h1:5mFbqnQVk2+1PYUcsEQ1YFQeXE4uc85ygDc9JK/owXU=
+github.com/hughobrien/hap v0.0.36-0.20260619225610-910e73cb7a26/go.mod h1:vWJ+URAmB9aEXZ6bWeqO9iHwz+pcb89eR1pNYK2ZAUM=
 github.com/miekg/dns v1.1.61 h1:nLxbwF3XxhwVSm8g9Dghm9MHPaUZuqhPiGL+675ZmEs=
 github.com/miekg/dns v1.1.61/go.mod h1:mnAarhS3nWaW+NVP2wTkYVIZyHNJ098SJZUki3eykwQ=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
