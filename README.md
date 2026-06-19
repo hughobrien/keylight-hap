@@ -27,8 +27,9 @@ stateful HomeKit front-end over it:
 
 ```sh
 # The HTTP endpoint the daemon drives (via Go's net/http) — shown with curl
-# here only so you can poke it by hand:
-$ curl http://192.168.1.31:9123/elgato/lights
+# here only so you can poke it by hand. Each light advertises an mDNS name
+# like elgato-key-light-<id>.local (no need to know its IP):
+$ curl http://elgato-key-light-c998.local:9123/elgato/lights
 {"numberOfLights":1,"lights":[{"on":1,"brightness":20,"temperature":213}]}
 
 # The daemon, once running, logs its pairing PIN:
