@@ -26,7 +26,8 @@ The light speaks a tiny unauthenticated HTTP API; the daemon is a thin,
 stateful HomeKit front-end over it:
 
 ```sh
-# What the daemon talks to under the hood:
+# The HTTP endpoint the daemon drives (via Go's net/http) — shown with curl
+# here only so you can poke it by hand:
 $ curl http://192.168.1.31:9123/elgato/lights
 {"numberOfLights":1,"lights":[{"on":1,"brightness":20,"temperature":213}]}
 
