@@ -5,6 +5,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/brutella/hap"
+
 	"github.com/hughobrien/keylight-hap/internal/elgato"
 )
 
@@ -16,7 +18,7 @@ func TestLightAccessory_WriteAndSync(t *testing.T) {
 
 	la := newLightAccessory(ctx, "Desk",
 		elgato.Info{ProductName: "Elgato Key Light", SerialNumber: "S1"},
-		elgato.State{On: true, Brightness: 20, Temperature: 213}, c)
+		elgato.State{On: true, Brightness: 20, Temperature: 213}, c, hap.NewFsStore(t.TempDir()))
 
 	// Invoke the brightness write handler as a remote write would.
 	la.onBrightnessWrite(70)
