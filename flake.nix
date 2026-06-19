@@ -20,7 +20,7 @@
         # NAR hash of this module set. To refresh after changing deps: set to
         # pkgs.lib.fakeHash, run `nix build .#keylight-hap`, paste the
         # reported `got:` hash here.
-        vendorHash = "sha256-EAWXkIN1rt7Q83+25g1rU6K3CpnTnfZguqgKedrk4ZI=";
+        vendorHash = "sha256-NpliKaZiHUcIgXgZN0Ltn8norSBJgdhq5FukiJR7cLk=";
         subPackages = [ "cmd/keylight-hap" ];
         ldflags = [ "-s" "-w" ];
         doCheck = true;
