@@ -17,7 +17,12 @@
         pname = "keylight-hap";
         inherit version;
         src = ./.;
-        vendorHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+        # First build on a Nix host: leave this as lib.fakeHash, run
+        # `nix build .#keylight-hap`, and Nix will fail with the real
+        # `got: sha256-…` — paste that value here. (It can't be cribbed from
+        # breezyd: the vendorHash is a NAR hash of *this* module set, which
+        # differs from breezyd's.)
+        vendorHash = pkgs.lib.fakeHash;
         subPackages = [ "cmd/keylight-hap" ];
         ldflags = [ "-s" "-w" ];
         doCheck = true;
