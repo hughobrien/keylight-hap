@@ -53,19 +53,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	slog.Info("HomeKit PIN", "pin", formatPin(b.Pin))
+	slog.Info("HomeKit PIN", "pin", bridge.FormatPin(b.Pin))
 
 	if err := b.Run(ctx); err != nil && ctx.Err() == nil {
 		slog.Error("server stopped", "err", err)
 		os.Exit(1)
 	}
-}
-
-func formatPin(pin string) string {
-	if len(pin) != 8 {
-		return pin
-	}
-	return pin[:4] + "-" + pin[4:]
 }
 
 func envOr(key, def string) string {

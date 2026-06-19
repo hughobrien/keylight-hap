@@ -44,8 +44,8 @@ func TestPinFileMode(t *testing.T) {
 	}
 }
 
-func TestFormatPinDisplay(t *testing.T) {
-	if got := formatPinDisplay("12345678"); got != "1234-5678" {
+func TestFormatPin(t *testing.T) {
+	if got := FormatPin("12345678"); got != "1234-5678" {
 		t.Fatalf("got %q", got)
 	}
 }

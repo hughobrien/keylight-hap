@@ -86,6 +86,10 @@ func (l *lightAccessory) onTemperatureWrite(v int) {
 func (l *lightAccessory) sync(st elgato.State) {
 	l.on.SetValue(st.On)
 	_ = l.bright.SetValue(st.Brightness)
+	// Re-clamp: guards against the device reporting a temperature outside its
+	// advertised 143-344 mired range. Not redundant with the characteristic's
+	// min/max, which constrains HomeKit writes but not values we push via
+	// SetValue here.
 	t := st.Temperature
 	if t < elgato.TempMin {
 		t = elgato.TempMin

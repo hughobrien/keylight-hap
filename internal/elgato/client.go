@@ -6,7 +6,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -171,6 +173,10 @@ func (c *Client) do(req *http.Request, out interface{}) error {
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
+		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		if msg := strings.TrimSpace(string(body)); msg != "" {
+			return fmt.Errorf("elgato: %s %s -> %s: %s", req.Method, req.URL.Path, resp.Status, msg)
+		}
 		return fmt.Errorf("elgato: %s %s -> %s", req.Method, req.URL.Path, resp.Status)
 	}
 	if out == nil {
