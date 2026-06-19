@@ -109,11 +109,21 @@ HomeKit's `ColorTemperature` characteristic.
 pass-through, no arithmetic — only a clamp to the device's supported
 `[143, 344]` range.
 
-**Verification gate:** because two published docs disagreed, the mapping is
-isolated in one small, well-named function with a unit test, and the
-direction MUST be confirmed against the real light (192.168.1.31) during
-implementation — set warm in Home, confirm the device goes warm. If ever
-proven inverted, only that one function changes.
+**Verification gate — CONFIRMED on hardware (2026-06-18).** Tested against
+the real light (192.168.1.31, serial `BW17K1A00377`) by setting values in
+the Elgato iPhone app and reading `GET /elgato/lights`:
+
+| Set in app    | Device reports     |
+|---------------|--------------------|
+| 2900K (warm)  | `temperature: 344` |
+| 7000K (cool)  | `temperature: 143` |
+| 3% brightness | `brightness: 3`    |
+| 100%          | `brightness: 100`  |
+
+Direction and units are settled: `temperature` is mireds (143 cool → 344
+warm), matching HomeKit. The mapping is still isolated in one small,
+well-named function with a unit test, but no inversion risk remains. The
+adamesch `/0.05` formula is confirmed wrong on direction.
 
 ### Discovery
 
@@ -306,8 +316,9 @@ systemd unit:
   toolchain version in `go.mod`, and the `nixpkgs` flake input. Run
   `go get -u ./... && go mod tidy` and `nix flake update`, then re-run tests
   before locking. Note any version that had to be held back and why.
-- **Confirm colour-temperature direction on the real light** (see the
-  Verification gate above) before considering the feature done.
+
+(The colour-temperature direction has already been confirmed on hardware —
+see the Verification gate above.)
 
 ## Defaults chosen (no objection raised)
 
