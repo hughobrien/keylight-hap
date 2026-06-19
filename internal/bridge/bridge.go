@@ -46,6 +46,8 @@ func New(ctx context.Context, opts Options) (*Bridge, error) {
 
 	b := &Bridge{poll: opts.PollInterval}
 
+	store := hap.NewFsStore(opts.StateDir)
+
 	var children []*accessory.A
 	for _, t := range opts.Lights {
 		info, err := t.Client.Info(ctx)
@@ -56,7 +58,7 @@ func New(ctx context.Context, opts Options) (*Bridge, error) {
 		if err != nil {
 			return nil, fmt.Errorf("bridge: state for %s: %w", t.Name, err)
 		}
-		la := newLightAccessory(ctx, accessoryName(info, t.Name), info, st, t.Client)
+		la := newLightAccessory(ctx, accessoryName(info, t.Name), info, st, t.Client, store)
 		b.lights = append(b.lights, la)
 		children = append(children, la.a.A)
 	}
@@ -67,7 +69,6 @@ func New(ctx context.Context, opts Options) (*Bridge, error) {
 		Model:        "keylight-hap",
 	})
 
-	store := hap.NewFsStore(opts.StateDir)
 	server, err := hap.NewServer(store, bridgeAcc.A, children...)
 	if err != nil {
 		return nil, fmt.Errorf("bridge: new server: %w", err)
