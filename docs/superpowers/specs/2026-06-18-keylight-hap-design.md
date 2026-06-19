@@ -76,7 +76,7 @@ state from the PUT response without a follow-up GET.
 | Field         | Type | Range   | Meaning                              |
 |---------------|------|---------|--------------------------------------|
 | `on`          | int  | 0 / 1   | power                                |
-| `brightness`  | int  | 0–100   | percent (UI restricts ~3–100)        |
+| `brightness`  | int  | 0–100   | percent — API accepts 1–100 (wider than the app's ~3–100) |
 | `temperature` | int  | 143–344 | **mireds** — 143 = 7000K (cool), 344 = 2900K (warm) |
 
 ### Colour-temperature direction (resolved)
@@ -124,6 +124,16 @@ Direction and units are settled: `temperature` is mireds (143 cool → 344
 warm), matching HomeKit. The mapping is still isolated in one small,
 well-named function with a unit test, but no inversion risk remains. The
 adamesch `/0.05` formula is confirmed wrong on direction.
+
+### Brightness floor (observed on hardware)
+
+The API accepts `brightness` down to `1` while keeping `on: 1`, but at
+`brightness: 1` the light is **visually off** (confirmed on the real unit
+2026-06-18); the effective visible floor is ~2–3. The mapping stays a 1:1
+pass-through — we do not special-case low values. HomeKit's own UX covers
+the awkward zone: dragging brightness to 0 in Home sets the accessory's
+`On` to false (→ `on: 0`), so the only oddity is that 1% in Home looks dark
+while still reporting "on". Acceptable; no code handling needed.
 
 ### Discovery
 
