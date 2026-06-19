@@ -50,6 +50,10 @@ What's covered:
   (2900 K–7000 K). HomeKit *Identify* flashes the light.
 - **Two-way sync:** polls each light (default every 20 s) so changes from the
   Elgato app, a Stream Deck, or a keybinding appear in Home.
+- **Adaptive Lighting:** each light supports HomeKit Adaptive Lighting (see
+  [below](#adaptive-lighting)) — enable it on the bulb in the Home app and the
+  daemon tracks the day's natural colour-temperature curve, warming as the
+  light dims. Requires a home hub.
 - **HomeKit done right:** generated + persisted 8-digit PIN, pairing survives
   restarts, each light carries its real manufacturer / model / serial /
   firmware in the accessory details.
@@ -203,6 +207,32 @@ journalctl -u keylight-hap | grep -i pin
 Add the bridge in the Home app and enter that PIN. Every discovered light
 appears together under the one bridge, each as its own tile. To **factory-reset
 pairing**, delete the state directory and restart — a fresh PIN is generated.
+
+## Adaptive Lighting
+
+Each Key Light supports HomeKit **Adaptive Lighting** — the same feature Apple
+ships on first-party bulbs. Toggle it on for the bulb in the Home app and a home
+hub (Apple TV or HomePod) hands the daemon a 24-hour colour-temperature schedule;
+the daemon then drives the light along that curve, cooler in the daytime and
+warmer toward night, and shifts warmer as you dim the brightness. The schedule is
+refreshed by the hub each day.
+
+- **Requires a home hub.** Adaptive Lighting is set up and renewed by an Apple
+  TV / HomePod; without one the toggle won't appear. This is a HomeKit
+  requirement, not specific to keylight-hap.
+- **Manual changes turn it off.** Setting the colour temperature yourself —
+  from the Home app, the Elgato app, a Stream Deck, or a keybinding (the last
+  three are seen via the poll loop) — disables Adaptive Lighting until you
+  re-enable it in Home, exactly as Apple's own behaviour does.
+- **Survives restarts.** The active schedule is persisted in the state directory
+  alongside the PIN, so Adaptive Lighting resumes immediately after the daemon
+  restarts without waiting for the hub to re-send it.
+
+Implementation note: the three HomeKit transition characteristics and the curve
+engine live in the [`brutella/hap` fork](https://github.com/hughobrien/hap)
+this project builds against, ported from the reverse-engineered formats in
+[HAP-NodeJS](https://github.com/homebridge/HAP-NodeJS) and
+[HAP-python](https://github.com/ikalchev/HAP-python).
 
 ## Known limitations
 
