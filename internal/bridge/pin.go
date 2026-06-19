@@ -66,8 +66,8 @@ func generatePin() (string, error) {
 	}
 }
 
-// formatPinDisplay renders an 8-digit pin as "XXXX-XXXX" for logging.
-func formatPinDisplay(pin string) string {
+// FormatPin renders an 8-digit pin as "XXXX-XXXX" for logging.
+func FormatPin(pin string) string {
 	if len(pin) != 8 {
 		return pin
 	}

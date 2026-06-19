@@ -3,6 +3,7 @@ package bridge
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/hughobrien/keylight-hap/internal/elgato"
 )
@@ -42,7 +43,7 @@ func TestNew_BuildsServerWithPin(t *testing.T) {
 		StateDir:     t.TempDir(),
 		BridgeName:   "test-bridge",
 		Port:         0,
-		PollInterval: 20 * 1000 * 1000, // 20ms in nanoseconds, fast for test
+		PollInterval: 20 * time.Millisecond,
 		Lights:       []Target{{Name: "Desk", Client: elgato.New(d.HostPort())}},
 	})
 	if err != nil {
