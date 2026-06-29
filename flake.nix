@@ -47,6 +47,22 @@
         packages = with pkgs; [ go gopls gotools go-tools ];
       };
 
+      checks.gate = keylight-hap-pkg.overrideAttrs (old: {
+        pname = "keylight-hap-ci-gate";
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.clang ];
+        doCheck = true;
+        checkPhase = ''
+          runHook preCheck
+          export HOME="$TMPDIR"
+          go vet ./...
+          drift=$(gofmt -l . | grep -v '^vendor/' || true)
+          [ -z "$drift" ] || { echo "gofmt drift: $drift"; exit 1; }
+          go test ./...
+          CGO_ENABLED=1 CC=clang go test -race ./...
+          runHook postCheck
+        '';
+      });
+
       formatter = pkgs.nixpkgs-fmt;
     });
 
@@ -61,6 +77,7 @@
 
     packages   = forEachSystem (system: perSystem.${system}.packages);
     apps       = forEachSystem (system: perSystem.${system}.apps);
+    checks     = forEachSystem (system: perSystem.${system}.checks);
     devShells  = forEachSystem (system: perSystem.${system}.devShells);
     formatter  = forEachSystem (system: perSystem.${system}.formatter);
   };
