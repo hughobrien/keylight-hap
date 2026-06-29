@@ -24,4 +24,4 @@ require (
 	gopkg.in/Regis24GmbH/go-diacritics.v2 v2.0.3 // indirect
 )
 
-replace github.com/brutella/hap => github.com/hughobrien/hap v0.0.36-0.20260619225610-910e73cb7a26
+replace github.com/brutella/hap => github.com/hughobrien/hap v0.0.36-0.20260619225610-b50d8c4d58ec
