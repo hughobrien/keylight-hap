@@ -1,6 +1,6 @@
 module github.com/hughobrien/keylight-hap
 
-go 1.26.0
+go 1.27.3
 
 require (
 	github.com/brutella/dnssd v1.2.15-0.20260227152348-8c9d3cd68d00
